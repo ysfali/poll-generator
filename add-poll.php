@@ -1,12 +1,12 @@
 <?php
 	session_start();
 	include("connection.php");
-	if(isset($link))
-	{
-		echo "Connection established";
-	}
-	print_r($_SESSION);
-	print_r($_POST);
+	// if(isset($link))
+	// {
+	// 	echo "Connection established";
+	// }
+	// print_r($_SESSION);
+	// print_r($_POST);
 	// $_POST['question']="sda";
 	// $_POST['title']="dasnm";
     $start=time();
@@ -29,7 +29,7 @@
     // echo " ";
     $end = date('Y-m-d H:m:s', strtotime('+'.$_POST["time"].' days'));
     // echo "$end";
-    $query1="INSERT INTO `poll-details` (`question`,`title`,`user-id`,`start-time`,`end-time`,`multi-select`,`show-result`,`allow-comment`) VALUES ('".mysqli_real_escape_string($link,$_POST['question'])."','".mysqli_real_escape_string($link,$_POST['title'])."','".$_SESSION['id']."','".$start."','".$end."','".mysqli_real_escape_string($link,$_POST['multipleoption'])."','".mysqli_real_escape_string($link,$_POST['showresult'])."','".mysqli_real_escape_string($link,$_POST['allowcomment'])."')";
+    $query1="INSERT INTO `poll-details` (`question`,`title`,`user-id`,`start-time`,`end-time`,`multi-select`,`show-result`,`allow-comment`,`background-color`,`poll-color`,`title-color`,`num-of-options`) VALUES ('".mysqli_real_escape_string($link,$_POST['question'])."','".mysqli_real_escape_string($link,$_POST['title'])."','".$_SESSION['id']."','".$start."','".$end."','".mysqli_real_escape_string($link,$_POST['multipleoption'])."','".mysqli_real_escape_string($link,$_POST['showresult'])."','".mysqli_real_escape_string($link,$_POST['allowcomment'])."','".mysqli_real_escape_string($link,$_POST['backgroundcolor'])."','".mysqli_real_escape_string($link,$_POST['pollcolor'])."','".mysqli_real_escape_string($link,$_POST['titlecolor'])."','".mysqli_real_escape_string($link,$_POST['numoptions'])."')";
     $result1=mysqli_query($link, $query1);
     if(!$result1)
     {
@@ -37,11 +37,12 @@
     }
     if($result1)
     {
-    	echo "success";
+    	// echo "success";
         $query2="select `id` from `poll-details` where `start-time`='".$start."' LIMIT 1";
         $result2=mysqli_query($link,$query2);
         $row2=mysqli_fetch_array($result2);
-        print_r($row2);
+        // print_r($row2);
+        echo "$row2[0]";
         $opt="option";
         $num=1;
         while($num<=$_POST['numoptions'])

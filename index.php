@@ -1,7 +1,10 @@
 <?php
   session_start();
-  $_SESSION['id']=1;
-  // unset($_SESSION['id']);
+  if(isset($_GET["logout"]) AND isset($_SESSION['id']))
+  {
+    session_destroy();
+    echo "<script>window.location.href='../poll-generator';</script>";
+  }
 ?>
 
 <!DOCTYPE html>
@@ -57,9 +60,7 @@
         right: 38%;
         left: 35%; } }
 
-        label{
-          text-align: center;
-        }
+        
         .select-wrapper input.select-dropdown {
           /*background-color: #26a69a ;*/
           border-radius: 2px;
@@ -77,19 +78,29 @@
       <nav class="teal lighten-1">
       <div class="nav-wrapper">
         <div class="container">
-          <a href="#" class="center brand-logo">Poll Generator</a>
+          <a href="../poll-generator" class="center brand-logo">Poll Generator</a>
           <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
            <?php
            if(!isset($_SESSION['id']))
            {
               echo '<ul class="right hide-on-med-and-down">
-                         <li><a class="right modal-trigger" data-target="myModal1" href="#myModal1">Login</a></li>
-                         <li><a class="right modal-trigger" data-target="myModal2" href="#myModal2">Sign Up</a></li>
-                       </ul>
-                      <ul class="side-nav" id="mobile-demo">
-                         <li><a class="right modal-trigger" data-target="myModal1" href="#myModal1">Login</a></li>
-                         <li><a class="right modal-trigger" data-target="myModal2" href="#myModal2">Sign Up</a></li>
-                      </ul>';
+                     <li><a class="right modal-trigger" data-target="myModal1" href="#myModal1">Login</a></li>
+                     <li><a class="right modal-trigger" data-target="myModal2" href="#myModal2">Sign Up</a></li>
+                    </ul>
+                    <ul class="side-nav" id="mobile-demo">
+                     <li><a class="right modal-trigger" data-target="myModal1" href="#myModal1">Login</a></li>
+                     <li><a class="right modal-trigger" data-target="myModal2" href="#myModal2">Sign Up</a></li>
+                    </ul>';
+            }
+            else{
+              echo '<ul class="right hide-on-med-and-down">
+                      <li><a class="right"href="dashboard.php">Dashboard</a></li>
+                      <li><a class="right"href="?logout=1">Logout</a></li>
+                    </ul>
+                    <ul class="side-nav" id="mobile-demo">
+                      <li><a class="right"href="dashboard.php">Dashboard</a></li>
+                      <li><a class="right" href="?logout=1">Logout</a></li>
+                    </ul>';
             }
            ?>
          </div>
@@ -101,9 +112,9 @@
   <div class="container">
     <div class="row">
       <div class="col s8 offset-s2">
-        <ul class="collapsible" data-collapsible="expandable">
+        <ul class="collapsible" data-collapsible="accordion">
           <li>
-            <div class="collapsible-header"><i class="material-icons">description</i>Question</div>
+            <div class="collapsible-header active"><i class="material-icons">description</i>Question</div>
             <div class="collapsible-body">
               <div class="row padded" id="question-panel">
                 <form method="post" id="myform">
@@ -144,7 +155,65 @@
           </li>
           <li>
             <div class="collapsible-header"><i class="material-icons">color_lens</i>Themes</div>
-            <div class="collapsible-body"><p>Lorem ipsum dolor sit amet.</p></div>
+            <div class="collapsible-body">
+              <form method="post" id="theme-form">
+                <div class="row margin">
+                  <div class="col s4 offset-s1">
+                    <br/>
+                    <label style="font-size:15px;">Background color : </label>
+                  </div>
+                  <div class="input-field col s5 offset-s1">
+                    <select id="background-color">
+                      <option value="white" disabled selected>Choose color(default white)</option>
+                      <option value="white">white</option>
+                      <option value="#e0e0e0">light grey</option>
+                      <option value="#c8e6c9">light green</option>
+                      <option value="#f8bbd0">light pink</option>
+                      <option value="#ffcdd2">light red</option>
+                      <option value="#bbdefb">light blue</option>
+                      <option value="#d7ccc8">light brown</option>
+                      <option value="#fff9c4">light yellow</option>
+                    </select>
+                  </div>
+                  <!-- <div class="row margin"> -->
+                  <div class="col s4 offset-s1">
+                    <br/>
+                    <label style="font-size:15px;">Poll color : </label>
+                  </div>
+                  <div class="input-field col s5 offset-s1">
+                    <select id="poll-color">
+                      <option value="#9e9e9e" disabled selected>Choose color(default grey)</option>
+                      <option value="#9e9e9e">grey</option>
+                      <option value="#4caf50">green</option>
+                      <option value="#795548">brown</option>
+                      <option value="#000000">black</option>
+                      <option value="#ff9800">orange</option>
+                      <option value="#8bc34a">light green</option>
+                      <option value="#f44336">red</option>
+                    </select>
+                  </div>
+                  <!-- <div class="row margin">  -->
+                  <div class="col s4 offset-s1">
+                    <br/>
+                    <label style="font-size:15px;">Title color : </label>
+                  </div>
+                  <div class="input-field col s5 offset-s1">
+                    <select id="title-color">
+                      <option value="#a5d6a7" disabled selected>Choose color(default light-green)</option>
+                      <option value="#a5d6a7">light-green</option>
+                      <option value="white">white</option>
+                      <option value="#e0e0e0">light grey</option>
+                      <option value="#c8e6c9">light green</option>
+                      <option value="#f8bbd0">light pink</option>
+                      <option value="#ffcdd2">light red</option>
+                      <option value="#bbdefb">light blue</option>
+                      <option value="#d7ccc8">light brown</option>
+                      <option value="#fff9c4">light yellow</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
           </li>
           <li>
             <div class="collapsible-header"><i class="material-icons">settings</i>Settings</div>
@@ -182,8 +251,16 @@
         </ul>
       </div>
     </div>
-    <div class="center">
+    <div class="center margin">
       <a class="waves-effect waves-light btn center" id="form-submit">Submit</a>
+    </div>
+    <div class="row" id="poll-reply">
+      <div class="col s2 offset-s3">
+        <p>Your Poll URL : </p>
+      </div>
+      <div class="col s4">
+        <input type="text" name="result" id="result" class="validate" value="">
+      </div>
     </div>
     
   </div>
@@ -196,25 +273,26 @@
     <!--Login Dialog Box Starts-->
       <div class="modal" id="myModal1">
           <div class="modal-content">
-              <h4 class="modal-title">Sign In</h4>
+              <h4 class="modal-title center">Sign In</h4>
               <p id="useralert" style="display:none" class="red center">Username and Password dont match!. Please try again later.</p>
-              <form method="post" id="idform">
+              <form method="post" id="loginForm">
                   <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s8 offset-s2">
                       <label for="username">Username</label>
                       <input type="text" class="validate" name="username" id="username" />
                       <p id="usernameerror" class="red center" style="display:none">Enter your username</p>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s8 offset-s2">
                       <label for="password">Password</label>
                       <input type="password" class="validate" name="password" id="password" />
                       <p id="passworderror" class="red center" style="display:none">Enter your password</p>
                     </div>
                   </div>
-                  
-                  <input type="submit" class="btn" value="Sign In" name="submit"/>
+                  <div class="center">
+                    <input type="submit" class="btn" value="Sign In" name="submit"/>
+                  </div>
               </form>
             <div class="modal-footer">
                <a href="#" class=" modal-action modal-close waves-effect waves-green btn-flat">Close</a>
@@ -229,31 +307,38 @@
               <p id="useralert1" style="display:none" class="red center">This username is already taken. Please use a different one.</p>
               <form method="post" id="signUpForm">
                   <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s8 offset-s2">
                       <label for="name">Name</label>
                       <input type="text" class="validate" name="name" id="name" />
                       <p id="nameerror" class="red center" style="display:none">Enter your name</p>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s8 offset-s2">
                       <label for="email">Email</label>
                       <input type="email" class="validate" name="email" id="email" />
                       <p id="emailerror" class="red center" style="display:none">Enter your email</p>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s8 offset-s2">
                       <label for="username">Username</label>
                       <input type="text" class="validate" name="username" id="username1" />
                       <p id="usernameerror1" class="red center" style="display:none">Enter your username</p>
                     </div>
                   </div>
                   <div class="row">
-                    <div class="input-field col s12">
+                    <div class="input-field col s8 offset-s2">
                       <label for="password1">Password</label>
                       <input type="password" class="validate" name="password1" id="password1" />
                       <p id="passworderror1" class="red center" style="display:none">Enter your password</p>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-field col s8 offset-s2">
+                      <label for="password2">Confirm Password</label>
+                      <input type="password" class="validate" name="password2" id="password2" />
+                      <p id="passwordmatcherror" class="red center" style="display:none">passwords dont match</p>
                     </div>
                   </div>
                   <div class="center">
@@ -281,11 +366,9 @@
       $(document).ready(function() {
         $('select').material_select();
       });
-
+      $("#poll-reply").hide();
       var optionno=4;
       $("#addopt").click(function(){
-
-
         sessionStorage.setItem("title", $('#title').val());
         sessionStorage.setItem("question", $('#question').val());
         if($("#option1").val()!=undefined)
@@ -312,7 +395,7 @@
 
         // alert("Data saved");
         setTimeout(function() {
-
+          // alert("hello");
           var title = sessionStorage.getItem('title');
           if (title !== null) $('#title').val(title);
           var question = sessionStorage.getItem('question');
@@ -346,7 +429,7 @@
           var s=$("#myform").html();
           // alert(s);
           optionno++;
-          s=s+'<div class="input-field col s6"><input type="text" name="option'+optionno+'" class="validate" value="" id="option'+optionno+'"><label class="active" for="option'+optionno+'">Option '+optionno+'</label></div>';
+          s=s+'<div class="input-field col s6"><input type="text" name="option'+optionno+'" class="validate" value="" id="option'+optionno+'"><label for="option'+optionno+'">Option '+optionno+'</label></div>';
           $("#myform").html(s);
           $("#option"+optionno).val("");
           // $("#question-panel").hide();
@@ -358,7 +441,153 @@
       });
 
 
+      $("#loginForm").submit(function(event){
+        event.preventDefault();
+        var username=$("#username").val();
+        var password=$("#password").val();
+        var type=$("#type").val();
+        var flag1=0,flag2=0;
+        if(username=="")
+        {
+          flag1=1;
+          $("#usernameerror").show();
+        }
+        else
+        {
+          flag1=0;
+          $("#usernameerror").hide();
+        }
+        if(password=="")
+        {
+          flag2=1;
+          $("#passworderror").show();
+        }
+        else
+        {
+          flag2=0;
+          $("#passworderror").hide();
+        }
+        if(flag1==0 && flag2==0)
+        {
+          $("#useralert").hide();
+          var inp=$("#loginForm").serialize();
+          $.ajax({
+            type: "POST",
+            url: "login.php",
+            data: inp,
+            success: function(data){
+              // alert(data);
+              if(data=="success")
+              {
+               $("#useralert").hide();
+               window.location.reload();
+              }
+              else if(data=="fail")
+              {
+                $("#useralert").show();
+              }
+            }
+          });
+        }
+      });
 
+        $("#signUpForm").submit(function(event){
+          event.preventDefault();
+          var name=$("#name").val();
+          var email=$("#email").val();
+          var username=$("#username1").val();
+          var password1=$("#password1").val();
+          var password2=$("#password2").val();
+          var flag1=0,flag2=0,flag3=0,flag4=0;
+          if(username=="")
+          {
+            flag1=1;
+            $("#usernameerror1").show();
+          }
+          else
+          {
+            flag1=0;
+            $("#usernameerror1").hide();
+          }
+          if(password1!=password2)
+          {
+            flag2=1;
+            $("#passwordmatcherror").show();
+            $("#passworderror1").hide();
+          }
+          else
+          {
+            $("#passwordmatcherror").hide();
+            if(password1=="")
+            {
+              flag2=1;
+              $("#passworderror1").html("Enter your password").show();
+            }
+            else
+            {
+              if(password1.length>=8 && password1.length<=32)
+              {
+                flag2=0;
+                // alert("password ok");
+                $("#passworderror1").hide();
+              }
+              else
+              {
+                flag2=1;
+                if(password1.length<8)
+                  $("#passworderror1").html("Minimum length of password is 8").show();
+                else
+                  $("#passworderror1").html("Maximum length of password is 32").show();
+              }
+            }
+          }
+          
+          if(name=="")
+          {
+            flag3=1;
+            $("#nameerror").show();
+          }
+          else
+          {
+            flag3=0;
+            $("#nameerror").hide();
+          }
+          if(email=="")
+          {
+            flag4=1;
+            $("#emailerror").show();
+          }
+          else
+          {
+            flag4=0;
+            $("#emailerror").hide();
+          }
+          //alert($("#signUpForm").serialize());
+          if(flag1==0 && flag2==0 && flag3==0 && flag4==0)
+          {
+            //$("#useralert").html("Submitting");
+            var inp=$("#signUpForm").serialize();
+            //alert(inp);
+            $("#useralert1").hide();
+            $.ajax({
+              type: "POST",
+              url: "signup.php",
+              data: inp,
+              success: function(data){
+                alert(data);
+                if(data=="success")
+                {
+                 $("#useralert1").hide();
+                 window.location.reload();
+                }
+                else if(data=="fail")
+                {
+                  $("#useralert1").show();
+                }
+              }
+            });
+          }
+        });
 
 
       $(document).ready(function(){
@@ -395,6 +624,7 @@
         var option2=$("#option2").val();
         var flag1=0,flag2=0;
         var multiopt=0,showresult=0,allowcomment=0,time=1;
+        var bcolor="white",pcolor="#9e9e9e",tcolor="#a5d6a7";
         if ($('#box1').is(":checked"))
         {
           multiopt=1;
@@ -414,6 +644,15 @@
         else
         {
           time=$("#days").val();
+        }
+        if($("#background-color").val()!=null){
+          bcolor=$("#background-color").val();
+        }
+        if($("#poll-color").val()!=null){
+          pcolor=$("#poll-color").val();
+        }
+        if($("#title-color").val()!=null){
+          tcolor=$("#title-color").val();
         }
         // alert(time);
         while(numoptions<=optionno)
@@ -438,32 +677,23 @@
         // alert(options);
           if(title!="" && question!="" && totalopts>1)
           {
+            var theme="backgroundcolor="+bcolor+"&pollcolor="+pcolor+"&titlecolor="+tcolor;
             var formdata="title="+title+"&question="+question+"&"+options+"&numoptions="+totalopts+"&multipleoption="+multiopt+"&showresult="+showresult+"&allowcomment="+allowcomment+"&time="+time;
-            alert(formdata);
+            var data=formdata+"&"+theme;
+            alert(data);
             //$("#useralert").html("Submitting");
             $("#useralert").hide();
             $.ajax({
               type: "POST",
               url: "add-poll.php",
-              data: formdata,
+              data: data,
               success: function(data){
                 alert(data);
-                // if(data=="admin")
-                // {
-                //  //alert("admin");
-                //  $("#useralert").hide();
-                //  window.location.href = "./admin/mainpage.php";
-                // }
-                // else if(data=="employee")
-                // {
-                //   //alert("employee");
-                //   $("#useralert").hide();
-                //   window.location.href = "./employee/mainpage.php";
-                // }
-                // else if(data=="fail")
-                // {
-                //   $("#useralert").show();
-                // }
+                if(data!="")
+                {
+                  $("#poll-reply").show();
+                  $("#result").val("localhost/poll-generator/poll.php?id="+data);
+                }
               }
             });
           }
@@ -474,67 +704,6 @@
         });
       });
 
-
-
-    // Run on page load
-    window.onload = function() {
-
-        // If values are not blank, restore them to the fields
-        var title = sessionStorage.getItem('title');
-        if (title !== null) $('#title').val(title);
-
-        var question = sessionStorage.getItem('question');
-        if (question !== null) $('#question').val(question);
-        var option1 = sessionStorage.getItem('option1');
-          if (option1 !== null && option1!=undefined) $('#option1').val(option1);
-          var option2 = sessionStorage.getItem('option2');
-          if (option2 !== null && option2!=undefined) $('#option2').val(option2);
-          var option3 = sessionStorage.getItem('option3');
-          if (option3 !== null && option3!=undefined) $('#option3').val(option3);
-          var option4 = sessionStorage.getItem('option4');
-          if (option4 !== null && option4!=undefined) $('#option4').val(option4);
-          var option5 = sessionStorage.getItem('option5');
-          if (option5 !== null && option5!=undefined) $('#option5').val(option5);
-          var option6 = sessionStorage.getItem('option6');
-          if (option6 !== null && option6!=undefined) $('#option6').val(option6);
-          var option7 = sessionStorage.getItem('option7');
-          if (option7 !== null && option7!=undefined) $('#option7').val(option7);
-          var option8 = sessionStorage.getItem('option8');
-          if (option8 !== null && option8!=undefined) $('#option8').val(option8);
-          var option9 = sessionStorage.getItem('option9');
-          if (option9 !== null && option9!=undefined) $('#option9').val(option9);
-          var option10 = sessionStorage.getItem('option10');
-          if (option10 !== null && option10!=undefined) $('#option10').val(option10);
-
-
-    }
-
-    // Before refreshing the page, save the form data to sessionStorage
-    window.onbeforeunload = function() {
-        sessionStorage.setItem("title", $('#title').val());
-        sessionStorage.setItem("question", $('#question').val());
-        if($("#option1").val()!=undefined)
-        sessionStorage.setItem("option1", $('#option1').val());
-        if($("#option2").val()!=undefined)
-        sessionStorage.setItem("option2", $('#option2').val());
-        if($("#option3").val()!=undefined)
-        sessionStorage.setItem("option3", $('#option3').val());
-        if($("#option4").val()!=undefined)
-        sessionStorage.setItem("option4", $('#option4').val());
-        if($("#option5").val()!=undefined)
-        sessionStorage.setItem("option5", $('#option5').val());
-        if($("#option6").val()!=undefined && $("#option6").val()!=null)
-        sessionStorage.setItem("option6", $('#option6').val());
-        if($("#option7").val()!=undefined)
-        sessionStorage.setItem("option7", $('#option7').val());
-        if($("#option8").val()!=undefined)
-        sessionStorage.setItem("option8", $('#option8').val());
-        if($("#option9").val()!=undefined)
-        sessionStorage.setItem("option9", $('#option9').val());
-        if($("#option10").val()!=undefined)
-        sessionStorage.setItem("option10", $('#option10').val());
-    }
-      
     </script>
   </body>
 </html>
