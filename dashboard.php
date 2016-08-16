@@ -140,4 +140,28 @@
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript">
     	$(".button-collapse").sideNav();
+      $(".btn").click(function(){
+        if(confirm("Are you sure you want to delete this poll?"))
+        {
+          var id=this.id;
+          var inp="id="+id;
+          $.ajax({
+              type: "POST",
+              url: "delete.php",
+              data: inp,
+              success: function(data){
+                // alert(data);
+                if(data=="success")
+                {
+                  location.reload();
+                }
+                else
+                {
+                  alert("unable to delete");
+                }
+              }
+            });
+          }        
+
+      });
     </script>

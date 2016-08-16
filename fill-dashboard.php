@@ -31,7 +31,8 @@
 				    <div class="collapsible-header row head">
 				      <p class="col s4 font-mid">'.$row["title"].'</p>
 				      <p class="col s4 font-mid">'.$row["vote-count"].'</p>
-				      <p class="col s4 font-mid">'.$status.'</p>
+				      <p class="col s2 font-mid">'.$status.'</p>
+				      <p class="col s2 font-mid"><a class="waves-effect waves-light btn red darken-2" id="'.$row['id'].'">Delete</a></p>
 				    </div>
 				    <div class="collapsible-body row panel">
 				    	<p class="col s12 font-mid center">Question : '.$row["question"].'</p>
