@@ -1,12 +1,15 @@
 <?php
 	session_start();
-	if(!isset($_SESSION['id'])){
-		echo '<script>window.location.href="../poll-generator";</script>';
+	if(!isset($_SESSION['id']) || !isset($_SESSION['type'])){
+		echo '<script>window.location.href="../poll-generator/admin-login.php";</script>';
 	}
+  if($_SESSION['type']!="admin"){
+    echo '<script>window.location.href="../poll-generator/admin-login.php";</script>';
+  }
 	if(isset($_GET["logout"]) AND isset($_SESSION['id']))
   {
     session_destroy();
-    echo "<script>window.location.href='../poll-generator';</script>";
+    echo "<script>window.location.href='../poll-generator/admin-login.php';</script>";
   }
 ?>
 <!DOCTYPE html>
@@ -17,7 +20,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>Poll Generator</title>
+    <title>Admin Dashboard</title>
 
     <!--Import Google Icon Font-->
       <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -26,38 +29,43 @@
       <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
     <style>
-      #myModal{
-        width: 500px;
+    body{
+      background-color: #f0f4c3;
+    }
+      .sized{
+        width: 150px;
+        height: 150px;
       }
-
-      .padded{
-        padding-left: 20px;
-        padding-right: 20px;
+      #mycontainer{
+        margin-top: 20vh;
       }
-
-      #myModal2{
-        max-height: 87vh;
-      }
-      .margin{
+      #active{
+        background-color: #8bc34a;
+        padding: 50px;
         margin: 20px;
+        margin-right: 16vw;
+        border-radius: 5px;
       }
-      body{
-      	background-color: #f0f4c3;
+      #inactive{
+        background-color: #03a9f4;
+        padding: 50px;
+        margin: 20px;
+        border-radius: 5px;
       }
       p{
-      	margin: 0px;
-      	padding:0px;
+        margin: 0px;
+        padding:0px;
       }
       .font-high{
-      	font-size: 20px;
-      	font-weight: bold;
+        font-size: 20px;
+        font-weight: bold;
       }
       .font-mid{
-      	font-size: 16px;
-      	font-weight: bold;
+        font-size: 16px;
+        font-weight: bold;
       }
       .font-low{
-      	font-size: 14px;
+        font-size: 14px;
       }
       .table-head{
         background-color: black;
@@ -75,35 +83,6 @@
         padding: 20px;
         border-radius: 5px;
       }
-
-      @media only screen and (min-width : 601px) and (max-width : 1260px) {
-        .toast {
-        border-radius: 0;
-        text-align: center;} }
-
-      @media only screen and (min-width : 1261px) {
-      .toast {
-      border-radius: 0;
-      text-align: center; } }
-
-      @media only screen and (min-width : 601px) and (max-width : 1260px) {
-      #toast-container {
-      right: 38%;
-      left: 35%;} }
-
-      @media only screen and (min-width : 1261px) {
-      #toast-container {
-      right: 38%;
-      left: 35%; } }
-
-      
-      .select-wrapper input.select-dropdown {
-        /*background-color: #26a69a ;*/
-        border-radius: 2px;
-        text-align:center;
-        background: linear-gradient(to bottom, #fff,#26a69a );
-      }
-
     </style>
   </head>
 
@@ -112,15 +91,17 @@
 
 
   	<div class="navbar-fixed">
-      <nav  class="green lighten-2">
+      <nav  class="grey darken-3">
       <div class="nav-wrapper">
         <div class="container">
-          <a href="../poll-generator" class="center brand-logo">Poll Generator</a>
+          <a href="../poll-generator/admin.php" class="center brand-logo">Poll Generator Admin Panel</a>
           <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">menu</i></a>
           <ul class="right hide-on-med-and-down">
-	         <li><a class="right"href="?logout=1">Logout</a></li>
+            <li><a class="right" href="admin.php">Dashboard</a></li>
+	         <li><a class="right" href="?logout=1">Logout</a></li>
 	       </ul>
 	       <ul class="side-nav" id="mobile-demo">
+            <li><a class="right" href="admin.php">Dashboard</a></li>
 	         <li><a class="right" href="?logout=1">Logout</a></li>
 	       </ul>
          </div>
@@ -129,10 +110,10 @@
     </div>
 
     <div class="container">
-    	<h5 class="center margin">This is where you can see all your polls</h5>
-    	<?php
-    		include("fill-dashboard.php");
-    	?>
+    	<h4 class="center">Manage all the active polls</h4>
+      <?php
+        include("fill-active.php");
+      ?>
     </div>
 
     <!--Import jQuery before materialize.js-->
@@ -140,4 +121,28 @@
     <script type="text/javascript" src="js/materialize.min.js"></script>
     <script type="text/javascript">
     	$(".button-collapse").sideNav();
+      $(".btn").click(function(){
+        if(confirm("Are you sure you want to delete this poll?"))
+        {
+          var id=this.id;
+          var inp="id="+id;
+          $.ajax({
+              type: "POST",
+              url: "delete.php",
+              data: inp,
+              success: function(data){
+                // alert(data);
+                if(data=="success")
+                {
+                  location.reload();
+                }
+                else
+                {
+                  alert("unable to delete");
+                }
+              }
+            });
+          }        
+
+      });
     </script>

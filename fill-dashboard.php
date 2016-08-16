@@ -10,7 +10,7 @@
 	{
 		echo '<ul class="collapsible" data-collapsible="accordion">
 				<li>
-			      <div class="collapsible-header row">
+			      <div class="collapsible-header row table-head">
 			      	<p class="col s4 font-high">Poll Title</p>
 			      	<p class="col s4 font-high">Vote Count</p>
 			      	<p class="col s4 font-high">Status</p>
@@ -28,14 +28,14 @@
         	}
         	$votes=0;
         	echo '<li>
-				    <div class="collapsible-header row">
+				    <div class="collapsible-header row head">
 				      <p class="col s4 font-mid">'.$row["title"].'</p>
 				      <p class="col s4 font-mid">'.$row["vote-count"].'</p>
 				      <p class="col s4 font-mid">'.$status.'</p>
 				    </div>
-				    <div class="collapsible-body row">
+				    <div class="collapsible-body row panel">
 				    	<p class="col s12 font-mid center">Question : '.$row["question"].'</p>
-				    	<p class="col s12 font-mid center">Poll Link : <a href="../poll-generator/poll.php?id='.$row["id"].'"">Link</a></p>
+				    	<p class="col s12 font-mid center">Poll Link : <a href="../poll-generator/poll.php?id='.$row["id"].'"" target="_blank">Link</a></p>
 				    	<table class="centered bordered highlight col s8 offset-s2">
 					        <thead>
 					          <tr>
@@ -62,5 +62,4 @@
     		echo "<h5 class='center'>You have not made any polls . Go to <a href='../poll-generator'>main page</a> to make some.</h5>";
     	}
 	}
-	
 ?>

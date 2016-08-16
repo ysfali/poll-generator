@@ -29,7 +29,12 @@
     // echo " ";
     $end = date('Y-m-d H:m:s', strtotime('+'.$_POST["time"].' days'));
     // echo "$end";
-    $query1="INSERT INTO `poll-details` (`question`,`title`,`user-id`,`start-time`,`end-time`,`multi-select`,`show-result`,`allow-comment`,`background-color`,`poll-color`,`title-color`,`num-of-options`) VALUES ('".mysqli_real_escape_string($link,$_POST['question'])."','".mysqli_real_escape_string($link,$_POST['title'])."','".$_SESSION['id']."','".$start."','".$end."','".mysqli_real_escape_string($link,$_POST['multipleoption'])."','".mysqli_real_escape_string($link,$_POST['showresult'])."','".mysqli_real_escape_string($link,$_POST['allowcomment'])."','".mysqli_real_escape_string($link,$_POST['backgroundcolor'])."','".mysqli_real_escape_string($link,$_POST['pollcolor'])."','".mysqli_real_escape_string($link,$_POST['titlecolor'])."','".mysqli_real_escape_string($link,$_POST['numoptions'])."')";
+    if(isset($_SESSION['id'])){
+        $query1="INSERT INTO `poll-details` (`question`,`title`,`user-id`,`start-time`,`end-time`,`multi-select`,`show-result`,`allow-comment`,`background-color`,`poll-color`,`title-color`,`num-of-options`) VALUES ('".mysqli_real_escape_string($link,$_POST['question'])."','".mysqli_real_escape_string($link,$_POST['title'])."','".$_SESSION['id']."','".$start."','".$end."','".mysqli_real_escape_string($link,$_POST['multipleoption'])."','".mysqli_real_escape_string($link,$_POST['showresult'])."','".mysqli_real_escape_string($link,$_POST['allowcomment'])."','".mysqli_real_escape_string($link,$_POST['backgroundcolor'])."','".mysqli_real_escape_string($link,$_POST['pollcolor'])."','".mysqli_real_escape_string($link,$_POST['titlecolor'])."','".mysqli_real_escape_string($link,$_POST['numoptions'])."')";
+    }
+    else{
+        $query1="INSERT INTO `poll-details` (`question`,`title`,`user-id`,`start-time`,`end-time`,`multi-select`,`show-result`,`allow-comment`,`background-color`,`poll-color`,`title-color`,`num-of-options`) VALUES ('".mysqli_real_escape_string($link,$_POST['question'])."','".mysqli_real_escape_string($link,$_POST['title'])."','0','".$start."','".$end."','".mysqli_real_escape_string($link,$_POST['multipleoption'])."','".mysqli_real_escape_string($link,$_POST['showresult'])."','".mysqli_real_escape_string($link,$_POST['allowcomment'])."','".mysqli_real_escape_string($link,$_POST['backgroundcolor'])."','".mysqli_real_escape_string($link,$_POST['pollcolor'])."','".mysqli_real_escape_string($link,$_POST['titlecolor'])."','".mysqli_real_escape_string($link,$_POST['numoptions'])."')";
+    }
     $result1=mysqli_query($link, $query1);
     if(!$result1)
     {
